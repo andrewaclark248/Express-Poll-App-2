@@ -15,17 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   User.init({
     user_name: DataTypes.STRING,
-    password_hash: DataTypes.STRING,
-    salt: DataTypes.STRING,
-    email: DataTypes.STRING,
-    email_confirmed: DataTypes.TINYINT,
-    mobile_phone: DataTypes.STRING,
-    mobile_phone_confirmed: DataTypes.STRING,
-    two_factor_enabled: DataTypes.TINYINT,
-    access_failed_count: DataTypes.INTEGER,
-    access_failed_count: DataTypes.INTEGER,
-    lockout_end: DataTypes.DATE,
-    lockout_enabled: DataTypes.TINYINT
+    password_hash: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'User',

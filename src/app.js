@@ -2,12 +2,22 @@ const express = require('express')
 const path = require('path')
 const homeRoutes = require('../routes/homeRoutes')
 var exphbs = require('express-handlebars');
-//const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const partialsPath = path.join(__dirname, '../views/partials')
 const app = express()
 
 //add cookie to http request
-//app.use(cookieParser());
+app.use(
+    express.urlencoded({
+      extended: true,
+    })
+  );
+
+app.use(cookieParser());
+
+//process post request
+app.use(express.json());
+
 
 //css and images
 app.use(express.static(path.join(__dirname, '../public')))
@@ -30,9 +40,11 @@ var hbs = exphbs.create({
 // Register `hbs` as our view engine using its bound `engine()` function.
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-var routes2 = require('../controllers/appController')
-app.use('/', routes2);
 
+var appRoutes = require('../controllers/appController')
+var loginRoutes = require('../controllers/loginController')
+app.use('/', appRoutes);
+app.use('/login', loginRoutes);
 
 //listen on port 3000
 app.listen(3000, () => {console.log("server is up on port 3000")})

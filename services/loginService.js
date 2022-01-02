@@ -1,7 +1,9 @@
-//register
+const models = require("../models");
 
-//authenticate
-function register( username, password ) {
+//register
+async function register( username, password ) {
+    const jane = await models.User.create({ user_name: "Jane", password_hash: "Doe" });
+    console.log("Jane's auto-generated ID:", jane.id);
     //create users
     //check if user already exists?
 
@@ -13,9 +15,9 @@ function register( username, password ) {
 
 }
 
-
-//login
-function login(user) {
+/** 
+//authenticate
+function authenticate(user) {
     //check if user exists
     
     //yes user exist
@@ -25,7 +27,13 @@ function login(user) {
         //return error
 }
 
+function authorize(user) {
+    
+}*/
+
 
 module.exports = {
-    register
+    register/**,
+    authenticate,
+    authorize */
 };
