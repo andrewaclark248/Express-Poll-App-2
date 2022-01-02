@@ -1,11 +1,10 @@
-//const taskModel = require('../models/taskModels');
+/****const express = require('express');
+const router = express.Router();
+router.get('/home', index);
 
 // Index page controller
-function index_page_get (req, resp) {
-    resp.render('index');
+function index (req, resp) {
+    resp.redirect('home');
 };
 
-// Export controllers
-module.exports = {
-  index_page_get
-};
+**/
