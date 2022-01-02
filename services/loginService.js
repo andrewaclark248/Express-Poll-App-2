@@ -2,8 +2,9 @@ const models = require("../models");
 
 //register
 async function register( username, password ) {
-    const jane = await models.User.create({ user_name: "Jane", password_hash: "Doe" });
+    const jane = await models.User.create({ user_name: username, password_hash: password });
     console.log("Jane's auto-generated ID:", jane.id);
+    
     //create users
     //check if user already exists?
 
