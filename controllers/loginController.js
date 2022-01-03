@@ -40,24 +40,32 @@ function register_get (req, resp) {
 }/** */
 
 
-function login_user (req, resp ) {
+async function login_user (req, resp ) {
   var username = req.body.email
   var password = req.body.password
 
-  var user = models.User.findOne({ where: { user_name: username } });
+  var user = await models.User.findOne({ where: { user_name: username } });
+  var userAsJson = JSON.stringify(user)
   debugger
-  if (typeof user != "undefined")
+  if (user)
   {
+
     if(user.password_hash == password)
     {
-      const token = jwt.sign(user, KEY, { expiresIn: "1h" });
+      debugger
+
+      const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
+      debugger
+
       //process.env.MY_SECRET
       resp.cookie("token", token);
-      return resp.redirect("home");
+      debugger
+
+      return resp.render("home");
     }
-    return resp.redirect("index");
 
   }
+  resp.render("index");
 
 }
 

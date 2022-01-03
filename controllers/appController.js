@@ -5,6 +5,6 @@ module.exports = router;
 
 // Index page controller
 function index (req, resp) {
-    resp.render('index');
+    resp.render('index', {layout: 'login_page' });
 };
 
