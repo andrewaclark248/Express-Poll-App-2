@@ -9,6 +9,7 @@ exports.cookieJwtAuthAdmin = (req, res, next) => {
     const user = jwt.verify(token, KEY);
     if(user.role != "Admin") 
     {
+      debugger
       throw "expection"
       
     }
