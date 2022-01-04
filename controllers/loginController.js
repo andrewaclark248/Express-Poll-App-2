@@ -46,26 +46,22 @@ async function login_user (req, resp ) {
 
   var user = await models.User.findOne({ where: { user_name: username } });
   var userAsJson = JSON.stringify(user)
-  debugger
+
   if (user)
   {
 
     if(user.password_hash == password)
     {
-      debugger
 
       const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
-      debugger
 
-      //process.env.MY_SECRET
       resp.cookie("token", token);
-      debugger
 
       return resp.render("home");
     }
 
   }
-  resp.render("index");
+  return resp.render("index", {layout: 'login_page' });
 
 }
 
