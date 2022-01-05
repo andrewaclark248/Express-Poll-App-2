@@ -1,35 +1,33 @@
 <div class="row">
    <div class="col-lg-3 offset-lg-3">
-       <center><button type="button" class="btn btn-primary">Add Admin User</button></center>
+       <center><a href='/adminUsers' class="btn btn-danger">Add Admin User</a></center>
     </div>
     <div class="col-lg-3">
-       <center><button type="button" class="btn btn-primary">Add General User</button></center>
+       <center><a href='/generalUsers' class="btn btn-danger">Add General User</a></center>
     </div>
-
 </div>
 <br>
 <div class="row">
     <div class="col-lg-8 offset-lg-2">
         <div class="card">
-            <div class="card-header">Header</div>
+            <div class="card-header">All Users</div>
             <div class="card-body">
                 <table class="table">
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">UserName</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Role</th>
                         </tr>
                     </thead>
-                    <p>this value = {{users.count}}</p>
                     <tbody>
-                        {{#each users}}
+                        {{#each users as |user| }}
                             <tr>
                                 <th scope="row">1</th>
-                                <td> {{ this.user_name}} </td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                                <td> {{ this.user_name }}</td>
+                                <td>{{ this.password_hash}}</td>
+                                <td> {{ this.role }}</td>
                             </tr>
                         {{/each}} 
                     </tbody>
@@ -37,7 +35,5 @@
             </div>
         </div>
     </div>
-
-
 </div>
 

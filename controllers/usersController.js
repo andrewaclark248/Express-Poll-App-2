@@ -12,3 +12,4 @@ async function my_primary_method (req, resp) {
     var users = await models.User.findAll();
     resp.render("users",  {users: users});
 }
+
