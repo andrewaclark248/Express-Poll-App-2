@@ -1,5 +1,8 @@
 const express = require('express')
 const path = require('path')
+var Handlebars = require('handlebars')
+var {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+
 const homeRoutes = require('../routes/homeRoutes')
 var exphbs = require('express-handlebars');
 const cookieParser = require("cookie-parser");
@@ -30,7 +33,9 @@ app.use('/js', express.static("/Users/andrewclark/github/express-poll-app-2/node
 
 //set default layout
 var hbs = exphbs.create({
-    defaultLayout: 'main'//,
+    defaultLayout: 'main',
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    //allowProtoPropertiesByDefault: true
     //helpers      : helpers,
     //partialsDir: [
     //    'shared/templates/',

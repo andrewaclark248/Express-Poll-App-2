@@ -24,10 +24,10 @@
                     </thead>
                     <p>this value = {{users.count}}</p>
                     <tbody>
-                        {{#each users}}
+                        {{#each users as |user| }}
                             <tr>
                                 <th scope="row">1</th>
-                                <td> {{ this.user_name}} </td>
+                                <td> {{ this.user_name }}</td>
                                 <td>Otto</td>
                                 <td>@mdo</td>
                             </tr>
