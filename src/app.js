@@ -50,11 +50,17 @@ app.set('view engine', 'handlebars');
 var appRoutes = require('../controllers/appController')
 var loginRoutes = require('../controllers/loginController')
 var usersRoutes = require('../controllers/usersController')
-var generalUserPollRoutes = require('../controllers/generalUserPollsController')
+var adminUsersRoutes = require('../controllers/adminUsersController')
+var generalUsersRoutes = require('../controllers/generalUsersController')
+
+//var generalUserPollRoutes = require('../controllers/generalUserPollsController')
 
 app.use('/', appRoutes);
 app.use('/login', loginRoutes);
 app.use('/users', usersRoutes) //admin route
+app.use('/adminUsers', adminUsersRoutes)
+app.use('/generalUsers', generalUsersRoutes)
+
 //app.use('/polls', generalUserPollRoutes) //general user route
 
 
