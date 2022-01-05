@@ -54,8 +54,16 @@ async function login_user (req, resp ) {
     {
 
       const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
-
       resp.cookie("token", token);
+
+      if (user.role == "Admin")
+      {
+        resp.locals.isAdmin = true
+      }
+      else
+      {
+        resp.locals.isAdmin = false
+      }
 
       return resp.render("home");
     }

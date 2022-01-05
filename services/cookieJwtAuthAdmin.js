@@ -7,11 +7,12 @@ exports.cookieJwtAuthAdmin = (req, res, next) => {
   const token = req.cookies.token;
   try {
     const user = jwt.verify(token, KEY);
-    if(user.role != "Admin") 
+    if (user.role != "Admin")
     {
-      debugger
-      throw "expection"
-      
+      res.locals.isAdmin = false}
+    else
+    {
+      res.locals.isAdmin = true
     }
     next();
 
