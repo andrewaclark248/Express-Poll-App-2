@@ -7,7 +7,7 @@ const { Op } = require("sequelize");
 
 router.get('/manage', cookieJwtAuthAdmin, index)
 router.get('/show', cookieJwtAuthAdmin, show)
-router.get('/poll_run', cookieJwtAuthAdmin, view_poll_run)
+router.get('/poll_run/:id', cookieJwtAuthAdmin, view_poll_run)
 
 module.exports = router;
 
@@ -40,6 +40,18 @@ async function show (req, resp) {
 }
 
 async function view_poll_run (req, resp) {
-
-    resp.render("polls/poll_run");
+    var poll_id = req.params.id
+    var poll_run = await models.Polls.findOne({id:  poll_id})
+    //var userResponses = await models.Polls.findAll({original_poll_id: poll_run.id, run_number: poll_run.run_number, include: models.User})
+    var userResponses = await models.Polls.findAll({
+        [Op.and]: [
+            { original_poll_id: poll_run.id },
+            { run_number: poll_run.run_number }
+          ],
+        include: models.User
+    })
+    debugger
+    var page_label = "Name: "+ userResponses[0].name +  ": Run #" + userResponses[0].run_number.toString()
+    
+    resp.render("polls/poll_run", {userResponses, userResponses, page_label: page_label});
 }

@@ -26,7 +26,7 @@ async function create (req, resp) {
     var questions = [req.body.question].flat()
 
     //create admin poll 
-    const createAdminPoll = await models.Polls.create({ name: poll_name, user_id: resp.locals.current_user.id });
+    const createAdminPoll = await models.Polls.create({ name: poll_name, user_id: resp.locals.current_user.id, run_number: 1 });
     
     for (const question of questions) { 
       const createUserPoll = await models.Questions.create({ question: question, polls_id: createAdminPoll.id });
