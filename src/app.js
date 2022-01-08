@@ -24,7 +24,8 @@ app.use(express.json());
 
 
 //css and images
-app.use(express.static(path.join(__dirname, '../public')))
+app.use('/js', express.static("/Users/andrewclark/github/express-poll-app-2/public/javascript"))
+
 
 //imports bootstrap libary into app
 app.use('/css', express.static("/Users/andrewclark/github/express-poll-app-2/node_modules/bootstrap/dist/css"))
@@ -52,17 +53,17 @@ var loginRoutes = require('../controllers/loginController')
 var usersRoutes = require('../controllers/usersController')
 var adminUsersRoutes = require('../controllers/adminUsersController')
 var generalUsersRoutes = require('../controllers/generalUsersController')
+var pollsRoutes = require('../controllers/pollsController')
 
-//var generalUserPollRoutes = require('../controllers/generalUserPollsController')
 
 app.use('/', appRoutes);
 app.use('/login', loginRoutes);
-app.use('/users', usersRoutes) //admin route
+app.use('/users', usersRoutes) 
 app.use('/adminUsers', adminUsersRoutes)
 app.use('/generalUsers', generalUsersRoutes)
+app.use('/polls', pollsRoutes)
 
-//app.use('/polls', generalUserPollRoutes) //general user route
-
+ 
 
 
 //listen on port 3000
