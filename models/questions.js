@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Questions.init({
     question: DataTypes.STRING,
     answer: DataTypes.BOOLEAN,
+    polls_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Questions',
