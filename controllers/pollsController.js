@@ -35,7 +35,7 @@ async function create (req, resp) {
     var userPolls = [];
     for (const user of users) { 
       var poll_user = await models.User.findOne({ where: { user_name: user } });
-      const createUserPoll = await models.Polls.create({ name: poll_name, user_id: poll_user.id });
+      const createUserPoll = await models.Polls.create({ name: poll_name, user_id: poll_user.id, original_poll_id: createAdminPoll.id });
 
       //create questions
       for (const question of questions) { 

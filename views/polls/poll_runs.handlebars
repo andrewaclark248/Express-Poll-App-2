@@ -1,30 +1,33 @@
 <div class="row">
-    <div class="col-lg-12">
-        <h3>Manage Polls</h3>
+   <div class="col-lg-4 ">
+       <h3>Poll Name: {{poll_name}} </h3>
+    </div>
+   <div class="col-lg-2 offset-lg-1 ">
+        <button type="button" class="btn btn-primary">Resend Poll</button>
     </div>
 </div>
+<br>
 <div class="row">
     <div class="col-lg-8 offset-lg-2">
         <div class="card">
-            <div class="card-header">All Users</div>
+            <div class="card-header">Runs</div>
             <div class="card-body">
                 <table class="table">
                     <thead>
                         <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Poll Nane</th>
                         <th scope="col">Created At</th>
-                        <th scope="col">Edit</th>
+                        <th scope="col">View Run</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each polls as |poll| }}
+                        {{#each poll_runs as |poll_run| }}
                             <tr>
                                 <th scope="row">1</th>
-                                <td> {{ this.name }}</td>
-                                <td> some date </td>
-                                <td> <a href="/polls/show" class="link-primary">View Poll</a></td>
-                                 <input type="hidden"  name="poll_id" value={{ this.id }}>
+                                <td>{{ this.createdAt }}</td>
+                                <td>             
+                                    <a class="nav-link" href="/polls/poll_run">View Poll Run</a> <!-- admin route -->
+                                </td>
                             </tr>
                         {{/each}} 
                     </tbody>
@@ -33,3 +36,4 @@
         </div>
     </div>
 </div>
+
