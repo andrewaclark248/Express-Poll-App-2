@@ -10,7 +10,7 @@
        <div class="card">
         <div class="card-header">Header</div>
         <div class="card-body">
-            <form action="/login/register" method="POST">
+            <form action="/polls/create" method="POST">
                 <div class="row">
                     <div class="form-group">
                         <label for="poll_name">Poll Name</label>
@@ -20,9 +20,31 @@
                 <br>
                 <div class="row">
                     <center><h5>Add Users (users to recieve poll)</h5></center>
+                        <div class="col-lg-2 offset-lg-5">
+                            {{#each users as |user| }}
+                                    <div class="form-check">
+                                        <input class="form-check-input" name="users_to_add" type="checkbox" value="{{this.user_name}}" id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            {{ this.user_name }}
+                                        </label>
+                                    </div>
+                            {{/each}} 
+                        </div>
+
                 </div>
+                <br>
                 <div class="row">
                     <center><h5>Add Questions (users to recieve poll)</h5></center>
+
+                    <div class="form-group add_questions_form">
+                        <input name="question" id="question" type="" class="form-control" id="question"  placeholder="Enter Question Here">
+                    </div>
+                    
+                    <br>
+                    <br>
+                    <center>
+                        <button class="btn btn-primary btn-sm add_field_button" style="width: 30%">Submit</button>
+                    </center>
                 </div>
                 </br>
                 <button type="submit" class="btn btn-primary">Submit</button>
@@ -32,4 +54,24 @@
     </div>
 
 </div>
+<script>
+    $(document).ready(function() {
+	var max_fields      = 10; //maximum input boxes allowed
+	var wrapper   		= $(".add_questions_form"); //Fields wrapper
+	var add_button      = $(".add_field_button"); //Add button ID
+	
+    console.log("my log something");
+    console.log(wrapper);
 
+	var x = 1; //initlal text box count
+	$(add_button).click(function(e){ //on add input button click
+		e.preventDefault();
+		if(x < max_fields){ //max input box allowed
+			x++; //text box increment
+			$(wrapper).append('<br><input name="question" id="question" type="" class="form-control" id="question"  placeholder="Enter Question Here">'); //add input box
+		}
+	});
+	
+
+});
+</script>

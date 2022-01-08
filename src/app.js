@@ -24,7 +24,8 @@ app.use(express.json());
 
 
 //css and images
-app.use(express.static(path.join(__dirname, '../public')))
+app.use('/js', express.static("/Users/andrewclark/github/express-poll-app-2/public/javascript"))
+
 
 //imports bootstrap libary into app
 app.use('/css', express.static("/Users/andrewclark/github/express-poll-app-2/node_modules/bootstrap/dist/css"))
