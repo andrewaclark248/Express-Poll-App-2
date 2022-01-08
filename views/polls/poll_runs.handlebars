@@ -1,0 +1,40 @@
+<div class="row">
+   <div class="col-lg-4 ">
+       <h3>Poll Name: {{poll_name}} </h3>
+    </div>
+   <div class="col-lg-2 offset-lg-1 ">
+        <button type="button" class="btn btn-primary">Resend Poll</button>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-header"><center><h5>Poll Runs</h5></center></div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">View Run</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each poll_runs as |poll_run| }}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>{{ this.createdAt }}</td>
+                                <td>             
+                                    <a class="" href="/polls/poll_run/{{ this.id }}">View Poll Run</a> <!-- admin route -->
+                                </td>
+
+                            </tr>
+                        {{/each}} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

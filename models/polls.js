@@ -16,14 +16,19 @@ module.exports = (sequelize, DataTypes) => {
   Polls.init({
     name: DataTypes.STRING,
     user_id: DataTypes.INTEGER,
-    original_poll_id: DataTypes.INTEGER
+    original_poll_id: DataTypes.INTEGER,
+    run_number: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Polls',
   });
   Polls.associate = function(models) {
     Polls.hasMany(models.Questions)
-    Polls.belongsTo(models.User)
+    Polls.belongsTo(models.User, {
+        foreignKey: {
+          name: 'user_id'
+        }
+      })
   };
   
 
