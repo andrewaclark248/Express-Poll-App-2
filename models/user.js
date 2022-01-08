@@ -24,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
   });
   User.associate = function(models) {
     User.hasMany(models.Questions)
-    User.hasMany(models.Polls)
+    User.hasMany(models.Polls, {
+      foreignKey: {
+        name: 'user_id'
+      }
+    })
   };
   
   return User;

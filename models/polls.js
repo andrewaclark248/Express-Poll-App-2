@@ -23,7 +23,11 @@ module.exports = (sequelize, DataTypes) => {
   });
   Polls.associate = function(models) {
     Polls.hasMany(models.Questions)
-    Polls.belongsTo(models.User)
+    Polls.belongsTo(models.User, {
+        foreignKey: {
+          name: 'user_id'
+        }
+      })
   };
   
 
