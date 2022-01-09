@@ -23,7 +23,7 @@
                                 <th scope="row">1</th>
                                 <td> {{ this.name }}</td>
                                 <td> some date </td>
-                                <td> <a href="/polls/show" class="link-primary">View Poll</a></td>
+                                <td> <a href="/polls/{{this.id}}/show" class="link-primary">View Poll</a></td>
                                  <input type="hidden"  name="poll_id" value={{this.id}}>
                             </tr>
                         {{/each}} 

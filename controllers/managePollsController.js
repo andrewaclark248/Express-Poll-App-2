@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 
 
 router.get('/manage', cookieJwtAuthAdmin, index)
-router.get('/show', cookieJwtAuthAdmin, show)
+router.get('/:id/show', cookieJwtAuthAdmin, show)
 router.get('/poll_run/:id', cookieJwtAuthAdmin, view_poll_run)
 router.get('/:id/resend_poll', cookieJwtAuthAdmin, resend_poll)
 
@@ -27,46 +27,62 @@ async function index (req, resp) {
 
 //list all polls run (find by original_poll_id)
 async function show (req, resp) {
-    debugger
-    var poll_id = req.body.poll_id
-    //(original_poll_id: poll_id, user_id: resp.locals.current_user.id)
+    var poll_id = Number(req.params.id)
+    //get all poll runs for a poll
+
+
+    //get original poll
+    const original_poll = await models.Polls.findOne({
+      where: {
+          id: poll_id
+      }
+    });
+
+    //get poll runs
     const poll_runs = await models.Polls.findAll({
-        where: {
-            original_poll_id: poll_id || null,
-            user_id: resp.locals.current_user.id
-        }
-      });
-    debugger
-    var poll_name = poll_runs[0].name
-    resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_name: poll_name, poll_id: poll_id });
+      where: {
+        [Op.and]: [
+          {original_poll_id: poll_id},
+          {user_id: resp.locals.current_user.id}
+        ]
+      }
+    });
+    poll_runs.push(original_poll)
+    
+    resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_id: poll_id });
 }
 
 async function view_poll_run (req, resp) {
-    var poll_id = req.params.id
-    var poll_run = await models.Polls.findOne({id:  poll_id})
+    var poll_id = Number(req.params.id)
+    var poll_run = await models.Polls.findOne({ where: {id: poll_id}})
     //var userResponses = await models.Polls.findAll({original_poll_id: poll_run.id, run_number: poll_run.run_number, include: models.User})
     var userResponses = await models.Polls.findAll({
         [Op.and]: [
             { original_poll_id: poll_run.id },
-            { run_number: poll_run.run_number }
+            { run_number: Number(poll_run.run_number) }
           ],
         include: models.User
     })
-    
+    debugger
     var page_label = "Name: "+ userResponses[0].name +  ": Run #" + userResponses[0].run_number.toString()
     
-    resp.render("polls/poll_run", {userResponses, userResponses, page_label: page_label});
+    resp.render("polls/poll_run", {userResponses: userResponses, page_label: page_label});
 }
 
 
 async function resend_poll (req, resp) {
-    debugger
-    const users = await models.User.findAll({
-        where: {
-          admin_id: resp.locals.current_user.id
-        }
-      });
-    resp.render("polls/index", {users, users});
+    //suppose to be original poll_id
+
+    var original_poll = await models.Polls.findOne({id:  Number(req.params.id)})
+
+    //get users for a pol
+    var users_polls = await models.Polls.findOne({original_poll_id: original_poll.id})
+
+    //create poll for each user
+
+    //create questions for each user
+
+    resp.render("home");
   }
   
   

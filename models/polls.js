@@ -34,7 +34,6 @@ module.exports = (sequelize, DataTypes) => {
         }
       })
   };
-  
 
   return Polls;
 };
