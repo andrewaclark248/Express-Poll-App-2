@@ -1,0 +1,43 @@
+<div class="row">
+   <div class="col-lg-3">
+       <h4>Some Poll Name</h4>
+    </div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-header">Questions</div>
+            <div class="card-body">
+                <form action="/mypolls/update" method="POST">
+                    <ol>
+                        {{#each questions as |question| }}
+                            <li>
+                                <dl>
+                                    <dt>
+                                        {{this.question}}
+                                    </dt>
+                                    <dd>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="question_{{this.id}}" id="inlineRadio1" value="true">
+                                            <label class="form-check-label" for="inlineRadio1">True</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="question_{{this.id}}" id="inlineRadio2" value="false">
+                                            <label class="form-check-label" for="inlineRadio2">False</label>
+                                        </div>
+                                    </dd>
+                                </dl>
+                            </li>
+                        {{/each}} 
+                    </ol>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

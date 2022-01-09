@@ -1,0 +1,47 @@
+<div class="row">
+   <div class="col-lg-5 ">
+       <h3>My Polls</h3>
+    </div>
+
+</div>
+<br>
+<div class="row">
+    <div class="col-lg-5 offset-lg-1">
+        <div class="card">
+            <div class="card-header"><center><h5>Unanswered Polls</h5></center></div>
+            <div class="card-body">
+                  <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Poll Name</th>
+                        <th scope="col">Run #</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each unanswered_polls as |unanswered_poll| }}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td> {{ this.name }}</td>
+                                <td> {{ this.run_number }}</td>
+                                <td>unswered</td>
+                                <td> <a class="nav-link" href="/myPolls/edit/{{this.id}}">View Poll</a></td>
+                            </tr>
+                        {{/each}} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 ">
+        <div class="card">
+            <div class="card-header"><center><h5>Answered Polls</h5></center></div>
+            <div class="card-body">
+                
+                
+            </div>
+        </div>
+    </div>
+</div>

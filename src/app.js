@@ -55,6 +55,7 @@ var adminUsersRoutes = require('../controllers/adminUsersController')
 var generalUsersRoutes = require('../controllers/generalUsersController')
 var pollsRoutes = require('../controllers/pollsController')
 var managePollsRoutes = require('../controllers/managePollsController')
+var myPollsRoutes = require('../controllers/myPollsController')
 
 
 app.use('/', appRoutes);
@@ -64,6 +65,7 @@ app.use('/adminUsers', adminUsersRoutes)
 app.use('/generalUsers', generalUsersRoutes)
 app.use('/polls', pollsRoutes)
 app.use('/polls', managePollsRoutes)
+app.use('/mypolls', myPollsRoutes)
 
  
 
