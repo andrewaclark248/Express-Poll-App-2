@@ -8,11 +8,11 @@ exports.cookieJwtAuthAdmin = (req, res, next) => {
   try {
     const user = jwt.verify(token, KEY);
     res.locals.current_user = user
-
+    //debugger
     if (user.role != "Admin")
     {
-      res.locals.isAdmin = false
-    }
+      res.clearCookie("token");
+      return res.redirect("/");    }
     else
     {
       res.locals.isAdmin = true

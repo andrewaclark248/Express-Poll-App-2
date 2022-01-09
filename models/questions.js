@@ -22,8 +22,16 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Questions',
   });
   Questions.associate = function(models) {
-    Questions.belongsTo(models.Polls)
-    Questions.belongsTo(models.User)
+    Questions.belongsTo(models.Polls, {
+      foreignKey: {
+        name: 'polls_id'
+      }
+    })
+    Questions.belongsTo(models.User, {
+      foreignKey: {
+        name: 'user_id'
+      }
+    })
   };
 
   return Questions;

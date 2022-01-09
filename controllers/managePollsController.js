@@ -8,6 +8,7 @@ const { Op } = require("sequelize");
 router.get('/manage', cookieJwtAuthAdmin, index)
 router.get('/show', cookieJwtAuthAdmin, show)
 router.get('/poll_run/:id', cookieJwtAuthAdmin, view_poll_run)
+router.get('/:id/resend_poll', cookieJwtAuthAdmin, resend_poll)
 
 module.exports = router;
 
@@ -26,6 +27,7 @@ async function index (req, resp) {
 
 //list all polls run (find by original_poll_id)
 async function show (req, resp) {
+    debugger
     var poll_id = req.body.poll_id
     //(original_poll_id: poll_id, user_id: resp.locals.current_user.id)
     const poll_runs = await models.Polls.findAll({
@@ -34,9 +36,9 @@ async function show (req, resp) {
             user_id: resp.locals.current_user.id
         }
       });
-    
+    debugger
     var poll_name = poll_runs[0].name
-    resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_name: poll_name});
+    resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_name: poll_name, poll_id: poll_id });
 }
 
 async function view_poll_run (req, resp) {
@@ -50,8 +52,21 @@ async function view_poll_run (req, resp) {
           ],
         include: models.User
     })
-    debugger
+    
     var page_label = "Name: "+ userResponses[0].name +  ": Run #" + userResponses[0].run_number.toString()
     
     resp.render("polls/poll_run", {userResponses, userResponses, page_label: page_label});
 }
+
+
+async function resend_poll (req, resp) {
+    debugger
+    const users = await models.User.findAll({
+        where: {
+          admin_id: resp.locals.current_user.id
+        }
+      });
+    resp.render("polls/index", {users, users});
+  }
+  
+  
