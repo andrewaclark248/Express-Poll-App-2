@@ -34,6 +34,18 @@ async function edit (req, resp) {
 
 async function update (req, resp) {
     debugger
+    var answers = req.body
+    for (var a in answers) {
+        var question_id = Number(a.slice(-2))
+        var question = await models.Questions.findOne({
+            where: {
+                id: question_id
+            }
+        });
+        //answers[a]
+        //update answer
+        debugger
+    }
     resp.render("myPolls/edit");
 }
 
