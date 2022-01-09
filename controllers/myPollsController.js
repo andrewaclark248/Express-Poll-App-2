@@ -42,7 +42,6 @@ async function update (req, resp) {
                 id: question_id
             }
         });
-        debugger
         //var question = await Questions.update({ lastName: "Doe" }, {
         //    where: {
         //      lastName: null
