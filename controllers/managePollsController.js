@@ -9,6 +9,7 @@ router.get('/manage', cookieJwtAuthAdmin, index)
 router.get('/:id/show', cookieJwtAuthAdmin, show)
 router.get('/poll_run/:id', cookieJwtAuthAdmin, view_poll_run)
 router.get('/:id/resend_poll', cookieJwtAuthAdmin, resend_poll)
+router.get('/user_response/:id', cookieJwtAuthAdmin, view_user_reponse)
 
 module.exports = router;
 
@@ -63,10 +64,18 @@ async function view_poll_run (req, resp) {
           ],
         include: models.User
     })
-    debugger
+    
     var page_label = "Name: "+ userResponses[0].name +  ": Run #" + userResponses[0].run_number.toString()
     
     resp.render("polls/poll_run", {userResponses: userResponses, page_label: page_label});
+}
+
+async function view_user_reponse (req, resp) {
+  var user_poll_id = Number(req.params.id)
+  var poll_run = await models.Polls.findOne({ where: {id: user_poll_id}})
+  var questions = await models.Questions.findAll({ where: {polls_id: poll_run.id}})
+  debugger
+  resp.render("polls/user_response", {questions: questions});
 }
 
 

@@ -1,0 +1,36 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h3>User Response</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-header">All Users</div>
+            <div class="card-body">
+                <ol>
+                    {{#each questions as |question| }}
+                        <li>
+                            <dl>
+                                <dt>
+                                    {{this.question}} {{ this.answer}}
+                                </dt>
+                                <dd>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="{{this.id}}" id="inlineRadio1" value="true"{{#if this.answer}}checked="checked"{{/if}} >
+                                        <label class="form-check-label" for="inlineRadio1">True</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="{{this.id}}" id="inlineRadio2" value="false" {{#if_eq this.answer false}}checked="checked"{{/if_eq}}>
+                                        <label class="form-check-label" for="inlineRadio2">False</label>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </li>
+                    {{/each}} 
+                </ol>
+
+            </div>
+        </div>
+    </div>
+</div>

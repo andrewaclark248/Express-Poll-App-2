@@ -34,8 +34,9 @@ async function edit (req, resp) {
 
 async function update (req, resp) {
     
-    var answers = req.body
-    for (var a in answers) {
+    var answers = req.body//Object.keys(answers)
+    
+    for (var a of Object.keys(answers)) {
         var question_id = Number(a)
         var question = await models.Questions.findOne({
             where: {
@@ -47,8 +48,8 @@ async function update (req, resp) {
         //      lastName: null
         //    }
         //  });
-        
-        var update = await question.update({ answer: Boolean(answers[a]) })
+        debugger
+        var update = await question.update({ answer: JSON.parse(answers[a]) })
     }
     resp.render("home");
 }

@@ -10,6 +10,25 @@ const partialsPath = path.join(__dirname, '../views/partials')
 const app = express()
 //const { cookieJwtAuth } = require('../services/cookieJwtAuthAdmin')
 
+const hbs2 = exphbs.create({
+  defaultLayout: 'main',
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers: {
+    if_eq: function(a, b, opts) {
+      
+
+      if(a == b) // Or === depending on your needs
+        return opts.fn(this);
+      else
+        return opts.inverse(this);
+
+
+      
+    }
+  }
+});
+
+
 //add cookie to http request
 app.use(
     express.urlencoded({
@@ -36,16 +55,10 @@ app.use('/js', express.static("/Users/andrewclark/github/express-poll-app-2/node
 var hbs = exphbs.create({
     defaultLayout: 'main',
     handlebars: allowInsecurePrototypeAccess(Handlebars)
-    //allowProtoPropertiesByDefault: true
-    //helpers      : helpers,
-    //partialsDir: [
-    //    'shared/templates/',
-    //    'views/partials/'
-    //    ]
     });
 
 // Register `hbs` as our view engine using its bound `engine()` function.
-app.engine('handlebars', hbs.engine);
+app.engine('handlebars', hbs2.engine);
 app.set('view engine', 'handlebars');
 
 var appRoutes = require('../controllers/appController')
