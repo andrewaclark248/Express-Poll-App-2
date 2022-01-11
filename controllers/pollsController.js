@@ -29,17 +29,17 @@ async function create (req, resp) {
     const createAdminPoll = await models.Polls.create({ name: poll_name, user_id: resp.locals.current_user.id, run_number: 1 });
     
     for (const question of questions) { 
-      const createUserPoll = await models.Questions.create({ question: question, polls_id: createAdminPoll.id });
+      const createUserPoll = await models.Questions.create({ question: question, polls_id: createAdminPoll.id, user_id:  resp.locals.current_user.id});
     }
 
     var userPolls = [];
     for (const user of users) { 
       var poll_user = await models.User.findOne({ where: { user_name: user } });
-      const createUserPoll = await models.Polls.create({ name: poll_name, user_id: poll_user.id, original_poll_id: createAdminPoll.id });
+      const createUserPoll = await models.Polls.create({ name: poll_name, user_id: poll_user.id, original_poll_id: createAdminPoll.id, run_number: 1 });
 
       //create questions
       for (const question of questions) { 
-        const saved_question = await models.Questions.create({ question: question, polls_id: createUserPoll.id });
+        const saved_question = await models.Questions.create({ question: question, polls_id: createUserPoll.id, user_id:  poll_user.id });
       }
     }
 
