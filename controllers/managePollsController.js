@@ -74,7 +74,7 @@ async function view_user_reponse (req, resp) {
   var user_poll_id = Number(req.params.id)
   var poll_run = await models.Polls.findOne({ where: {id: user_poll_id}})
   var questions = await models.Questions.findAll({ where: {polls_id: poll_run.id}})
-  debugger
+
   resp.render("polls/user_response", {questions: questions});
 }
 
@@ -82,16 +82,39 @@ async function view_user_reponse (req, resp) {
 async function resend_poll (req, resp) {
     //suppose to be original poll_id
 
-    var original_poll = await models.Polls.findOne({id:  Number(req.params.id)})
+    var original_poll = await models.Polls.findOne({where: {id:  Number(req.params.id)}})
+    var questions = await models.Questions.findAll({where: {polls_id: original_poll.id}})
+    
+    var run_number = 1+original_poll.run_number
 
-    //get users for a pol
-    var users_polls = await models.Polls.findOne({original_poll_id: original_poll.id})
+    const createAdminPoll = await models.Polls.create({ name: original_poll.name, user_id: resp.locals.current_user.id, run_number: run_number, original_poll_id: original_poll.id});
 
-    //create poll for each user
+    for (const question of questions)
+    {
+      const createUserPoll = await models.Questions.create({ question: question.question, polls_id: createAdminPoll.id, user_id:  resp.locals.current_user.id});
+    }
 
-    //create questions for each user
+    var usersFromOriginalPoll = await models.Polls.findAll({
+      where: {
+        [Op.and]: [
+          { original_poll_id: original_poll.id },
+          { run_number: 1 }
+        ]
+      },
+      include: models.User
+    })
+
+    for (const poll of usersFromOriginalPoll) { 
+      const createUserPoll = await models.Polls.create({ name: poll.name, user_id: poll.user_id, original_poll_id: original_poll.id, run_number: createAdminPoll.run_number});
+
+      //create questions
+      for (const question of questions) { 
+        const saved_question = await models.Questions.create({ question: question.question, polls_id: createUserPoll.id, user_id: poll.user_id });
+      }
+
+    }
 
     resp.render("home");
-  }
+}
   
   
