@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { cookieJwtAuthGeneralUser } = require('../services/cookieJwtAuthGeneralUser')
-const models = require("../models");
+const { cookieJwtAuthGeneralUser } = require('../../services/cookieJwtAuthGeneralUser')
+const models = require("../../models");
 
 router.get('/', cookieJwtAuthGeneralUser, index)
 router.get('/edit/:id', cookieJwtAuthGeneralUser, edit)
