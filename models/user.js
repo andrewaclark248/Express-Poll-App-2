@@ -33,6 +33,11 @@ module.exports = (sequelize, DataTypes) => {
         name: 'user_id'
       }
     })
+    User.hasMany(models.Polls, {
+      foreignKey: {
+        name: 'polls_id'
+      }
+    })
   };
   
   return User;
