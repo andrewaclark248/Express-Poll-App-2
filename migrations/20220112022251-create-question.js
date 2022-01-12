@@ -8,11 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      question: {
+      name: {
         type: Sequelize.STRING
       },
       answer: {
         type: Sequelize.BOOLEAN
+      },
+      poll_id: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,

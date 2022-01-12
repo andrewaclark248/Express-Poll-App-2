@@ -14,30 +14,14 @@ module.exports = router;
 
 function register_post (req, resp) {
   var result = loginService.register(req.body.email, req.body.password)
-  //debugger
   const token = jwt.sign(user, KEY, { expiresIn: "1h" });
-  //process.env.MY_SECRET
   resp.cookie("token", token);
   resp.redirect("home");
-    //var result = loginService.register(req.body)
-
-    //result
-      // is success then redirect to homepage
-    //result no success
-      //redirect to login page with error returned
-
-    //resp.render('index');
 };
 
 function register_get (req, resp) {
   resp.render("register")
-
-  ///result... user exists
-    //redirect to homeController/page
-  //no user does not exist
-    //redirect back to login page with error
-
-}/** */
+}
 
 
 async function login_user (req, resp ) {
@@ -45,23 +29,16 @@ async function login_user (req, resp ) {
   var password = req.body.password
 
   var user = await models.User.findOne({ where: { user_name: username } });
-  var userAsJson = JSON.stringify(user)
-
-  if (user)
-  {
-
-    if(user.password_hash == password)
+  if (user){
+    if(user.password == password)
     {
-
       const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
       resp.cookie("token", token);
 
-      if (user.role == "Admin")
-      {
+      if (user.role == "Admin"){
         resp.locals.isAdmin = true
       }
-      else
-      {
+      else{
         resp.locals.isAdmin = false
       }
 

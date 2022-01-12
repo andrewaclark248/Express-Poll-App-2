@@ -63,12 +63,12 @@ app.set('view engine', 'handlebars');
 
 var appRoutes = require('../controllers/appController')
 var loginRoutes = require('../controllers/loginController')
-var usersRoutes = require('../controllers/usersController')
-var adminUsersRoutes = require('../controllers/adminUsersController')
-var generalUsersRoutes = require('../controllers/generalUsersController')
-var pollsRoutes = require('../controllers/pollsController')
-var managePollsRoutes = require('../controllers/managePollsController')
-var myPollsRoutes = require('../controllers/myPollsController')
+var usersRoutes = require('../controllers/admin/usersController')
+var adminUsersRoutes = require('../controllers/admin/adminUsersController')
+var generalUsersRoutes = require('../controllers/admin/generalUsersController')
+var pollsRoutes = require('../controllers/admin/pollsController')
+//var managePollsRoutes = require('../controllers/managePollsController')
+var myPollsRoutes = require('../controllers/general/myPollsController')
 
 
 app.use('/', appRoutes);
@@ -77,7 +77,7 @@ app.use('/users', usersRoutes)
 app.use('/adminUsers', adminUsersRoutes)
 app.use('/generalUsers', generalUsersRoutes)
 app.use('/polls', pollsRoutes)
-app.use('/polls', managePollsRoutes)
+//app.use('/polls', managePollsRoutes)
 app.use('/mypolls', myPollsRoutes)
 
  
