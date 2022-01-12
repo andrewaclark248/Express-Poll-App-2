@@ -92,33 +92,24 @@ async function show (req, resp) {
 
 async function poll_run (req, resp) {
   var poll_id = Number(req.params.id)
-  var poll_run = await models.Polls.findOne({ where: {id: poll_id}})
+  var poll = await models.Poll.findOne({ where: {id: poll_id}})
+  var user_responses =  await poll.getUserPolls({include: [{model: models.User}]})
   //var userResponses = await models.Polls.findAll({original_poll_id: poll_run.id, run_number: poll_run.run_number, include: models.User})
-  var userResponses = await models.Polls.findAll({
-      [Op.and]: [
-          { original_poll_id: poll_run.id },
-          { run_number: Number(poll_run.run_number) }
-        ],
-      include: models.User
-  })
-  
-  var page_label = "Name: "+ userResponses[0].name +  ": Run #" + userResponses[0].run_number.toString()
-  
-  resp.render("polls/poll_run", {userResponses: userResponses, page_label: page_label});
+  debugger
+  var page_label = "some label"
+  resp.render("polls/poll_run", {userResponses: user_responses, page_label: page_label});
 }
 
 async function view_user_reponse (req, resp) {
-var user_poll_id = Number(req.params.id)
-var poll_run = await models.Polls.findOne({ where: {id: user_poll_id}})
-var questions = await models.Questions.findAll({ where: {polls_id: poll_run.id}})
+  var poll_id = Number(req.params.id)
+  var poll = await models.UserPoll.findOne({ where: {id: poll_id}})
+  var questions = await poll.getQuestions()
 
-resp.render("polls/user_response", {questions: questions});
+  resp.render("polls/user_response", {questions: questions});
 }
 
 
 async function resend_poll (req, resp) {
-  //suppose to be original poll_id
-
   var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
   var questions = await models.Question.findAll({where: {poll_id: poll.id}})
   
@@ -135,15 +126,13 @@ async function resend_poll (req, resp) {
     await admin_poll.createQuestion({name: question.name, user_id: admin_poll.user_id});
   }
   
-  //should be able to use: 
   var userPolls = await poll.getUserPolls({include: [{ model: models.User }]})//models.UserPoll.findAll({where: {poll_id: poll.id}, })
-  debugger
-  var userPolls = [];
+  
   for (const poll of userPolls) { 
     const user_poll = await admin_poll.createUserPoll({ user_id: poll.User.id });
 
     for (const question of questions) { 
-      await user_poll.createQuestion({name: question})
+      await user_poll.createQuestion({name: question.name})
     }
   } 
 

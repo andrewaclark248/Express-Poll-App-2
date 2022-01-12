@@ -11,7 +11,7 @@ module.exports = router;
 
 async function index (req, resp) {
 
-    var unanswered_polls = await models.Polls.findAll({
+    var unanswered_polls = await models.UserPoll.findAll({
         where: {
             user_id: resp.locals.current_user.id
         }
@@ -22,9 +22,9 @@ async function index (req, resp) {
 
 async function edit (req, resp) {
     var poll_id = Number(req.params.id)
-    var questions = await models.Questions.findAll({
+    var questions = await models.Question.findAll({
         where: {
-            polls_id: poll_id
+            poll_id: poll_id
         }
     });
 
@@ -38,7 +38,7 @@ async function update (req, resp) {
     
     for (var a of Object.keys(answers)) {
         var question_id = Number(a)
-        var question = await models.Questions.findOne({
+        var question = await models.Question.findOne({
             where: {
                 id: question_id
             }
