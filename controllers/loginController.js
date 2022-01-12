@@ -30,7 +30,7 @@ async function login_user (req, resp ) {
 
   var user = await models.User.findOne({ where: { user_name: username } });
   if (user){
-    if(user.password_hash == password)
+    if(user.password == password)
     {
       const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
       resp.cookie("token", token);

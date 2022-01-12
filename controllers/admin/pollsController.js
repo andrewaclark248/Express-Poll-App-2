@@ -32,24 +32,24 @@ async function create_poll (req, resp) {
     var questions = [req.body.question].flat()
 
 
-    const admin_poll = await models.Polls.create({ 
+    const admin_poll = await models.Poll.create({ 
       name: poll_name, 
       user_id: resp.locals.current_user.id, 
       run_number: 1 });
 
     for (const question of questions) { 
-      await admin_poll.createQuestion({question: question, user_id: admin_poll.user_id});
+      await admin_poll.createQuestion({name: question, user_id: admin_poll.user_id});
     }
-
+    
     var userPolls = [];
     for (const user of users) { 
       var poll_user = await models.User.findOne({ where: { user_name: user } });
-      const user_poll = await models.UserPolls.create({ poll_id: admin_poll.id, user_id: poll_user.id });
+      const user_poll = await admin_poll.createUserPoll({ user_id: poll_user.id });
 
       for (const question of questions) { 
-        await user_poll.createQuestion({question: question, user_id: poll_user.id})
+        await user_poll.createQuestion({name: question})
       }
-    }
+    } 
 
     resp.render("home");
 }
@@ -57,11 +57,12 @@ async function create_poll (req, resp) {
 
 
 
-//list all polls for admin
+//list all polls for admin user
 async function list (req, resp) {
-  const polls = await models.Polls.findAll({
+  const polls = await models.Poll.findAll({
       where: {
-          user_id: resp.locals.current_user.id
+          user_id: resp.locals.current_user.id,
+          run_number: 1
       }
     });
   
@@ -72,21 +73,19 @@ async function show (req, resp) {
   var poll_id = Number(req.params.id)
 
   //get original poll
-  const original_poll = await models.Polls.findOne({
+  const original_poll = await models.Poll.findOne({
     where: {
         id: poll_id
     }
   });
 
   //get poll runs
-  const poll_runs = await models.Polls.findAll({
+  const poll_runs = await models.Poll.findAll({
     where: {
-      [Op.and]: [
-        {original_poll_id: poll_id},
-        {user_id: resp.locals.current_user.id}
-      ]
+      original_poll_id: original_poll.id
     }
   });
+
   poll_runs.push(original_poll)
   resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_id: poll_id });
 }
@@ -120,37 +119,33 @@ resp.render("polls/user_response", {questions: questions});
 async function resend_poll (req, resp) {
   //suppose to be original poll_id
 
-  var original_poll = await models.Polls.findOne({where: {id:  Number(req.params.id)}})
-  var questions = await models.Questions.findAll({where: {polls_id: original_poll.id}})
+  var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
+  var questions = await models.Question.findAll({where: {poll_id: poll.id}})
   
-  var run_number = 1+original_poll.run_number
+  var run_number = 1+poll.run_number
 
-  const createAdminPoll = await models.Polls.create({ name: original_poll.name, user_id: resp.locals.current_user.id, run_number: run_number, original_poll_id: original_poll.id});
+  const admin_poll = await models.Poll.create({ 
+    name: poll.name, 
+    user_id: resp.locals.current_user.id, 
+    run_number: run_number,
+    original_poll_id: poll.id
+   });
 
-  for (const question of questions)
-  {
-    const createUserPoll = await models.Questions.create({ question: question.question, polls_id: createAdminPoll.id, user_id:  resp.locals.current_user.id});
+  for (const question of questions) { 
+    await admin_poll.createQuestion({name: question.name, user_id: admin_poll.user_id});
   }
+  
+  //should be able to use: 
+  var userPolls = await poll.getUserPolls({include: [{ model: models.User }]})//models.UserPoll.findAll({where: {poll_id: poll.id}, })
+  debugger
+  var userPolls = [];
+  for (const poll of userPolls) { 
+    const user_poll = await admin_poll.createUserPoll({ user_id: poll.User.id });
 
-  var usersFromOriginalPoll = await models.Polls.findAll({
-    where: {
-      [Op.and]: [
-        { original_poll_id: original_poll.id },
-        { run_number: 1 }
-      ]
-    },
-    include: models.User
-  })
-
-  for (const poll of usersFromOriginalPoll) { 
-    const createUserPoll = await models.Polls.create({ name: poll.name, user_id: poll.user_id, original_poll_id: original_poll.id, run_number: createAdminPoll.run_number});
-
-    //create questions
     for (const question of questions) { 
-      const saved_question = await models.Questions.create({ question: question.question, polls_id: createUserPoll.id, user_id: poll.user_id });
+      await user_poll.createQuestion({name: question})
     }
-
-  }
+  } 
 
   resp.render("home");
 }
