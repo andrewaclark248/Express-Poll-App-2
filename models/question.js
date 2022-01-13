@@ -16,22 +16,13 @@ module.exports = (sequelize, DataTypes) => {
   Question.init({
     name: DataTypes.STRING,
     answer: DataTypes.BOOLEAN,
-    poll_id: DataTypes.INTEGER
+    userPollId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Question',
   });
   Question.associate = function(models) {
-    Question.belongsTo(models.Poll, {
-      foreignKey: {
-        name: 'poll_id'
-      }
-    })
-    Question.belongsTo(models.UserPoll, {
-      foreignKey: {
-        name: 'poll_id'
-      }
-    })
+    Question.belongsTo(models.UserPoll)
   };
 
   return Question;

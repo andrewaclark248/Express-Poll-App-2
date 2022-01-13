@@ -1,23 +1,20 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Polls', {
+    await queryInterface.createTable('Questions', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
       },
-      original_poll_id: {
-        type: Sequelize.INTEGER
+      answer: {
+        type: Sequelize.BOOLEAN
       },
-      run_number: {
+      userPollId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -31,6 +28,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Polls');
+    await queryInterface.dropTable('Questions');
   }
 };

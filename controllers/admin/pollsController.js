@@ -85,9 +85,11 @@ async function show (req, resp) {
       original_poll_id: original_poll.id
     }
   });
+  var sortedArray = poll_runs.sort((a, b) => (a.createdAt > b.createdAt) ? 1 : -1)
+
 
   poll_runs.push(original_poll)
-  resp.render("polls/poll_runs", {poll_runs: poll_runs, poll_id: poll_id });
+  resp.render("polls/poll_runs", {poll_runs: sortedArray, poll_id: poll_id });
 }
 
 async function poll_run (req, resp) {
@@ -113,6 +115,9 @@ async function resend_poll (req, resp) {
   var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
   var questions = await models.Question.findAll({where: {poll_id: poll.id}})
   
+  //var last_poll = await models.Poll.findOne({where: {id:  }})
+
+
   var run_number = 1+poll.run_number
 
   const admin_poll = await models.Poll.create({ 
@@ -139,3 +144,7 @@ async function resend_poll (req, resp) {
   resp.render("home");
 }
 
+
+function get_run_number(poll){
+
+}
