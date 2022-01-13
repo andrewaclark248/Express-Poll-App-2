@@ -43,13 +43,7 @@ async function update (req, resp) {
                 id: question_id
             }
         });
-        //var question = await Questions.update({ lastName: "Doe" }, {
-        //    where: {
-        //      lastName: null
-        //    }
-        //  });
-        debugger
-        var update = await question.update({ answer: JSON.parse(answers[a]) })
+        await question.update({ answer: JSON.parse(answers[a]) })
     }
     resp.render("home");
 }

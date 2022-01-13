@@ -14,25 +14,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   User.init({
-    user_name: DataTypes.STRING,
+    userName: DataTypes.STRING,
     password: DataTypes.STRING,
     role: DataTypes.STRING,
-    admin_id: DataTypes.INTEGER
+    adminId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'User',
   });
+
   User.associate = function(models) {
-    User.hasMany(models.Poll, {
-      foreignKey: {
-        name: 'user_id'
-      }
-    })
-    User.hasMany(models.UserPoll, {
-      foreignKey: {
-        name: 'user_id'
-      }
-    })
+    User.hasMany(models.Poll)
+    User.hasMany(models.UserPoll)
   };
 
   return User;
