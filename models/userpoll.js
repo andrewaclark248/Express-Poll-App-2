@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   UserPoll.init({
     userId: DataTypes.INTEGER,
-    pollRunId: DataTypes.INTEGER
+    pollRunId: DataTypes.INTEGER,
+    status: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'UserPoll',

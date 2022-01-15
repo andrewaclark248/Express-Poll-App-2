@@ -20,11 +20,11 @@
                                     </dt>
                                     <dd>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="{{this.id}}" id="inlineRadio1" value="true">
+                                            <input class="form-check-input" type="radio" name="{{this.id}}" value="true" >
                                             <label class="form-check-label" for="inlineRadio1">True</label>
                                         </div>
                                         <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="radio" name="{{this.id}}" id="inlineRadio2" value="false">
+                                            <input class="form-check-input" type="radio" name="{{this.id}}" value="false" >
                                             <label class="form-check-label" for="inlineRadio2">False</label>
                                         </div>
                                     </dd>
@@ -32,12 +32,24 @@
                             </li>
                         {{/each}} 
                     </ol>
+                    <input type="hidden" id="userPollId"  name="userPollId" value="{{this.userPollId}}">
 
                     <button type="submit" class="btn btn-primary">Submit</button>
-
+                     
+                
                 </form>
             </div>
         </div>
     </div>
 </div>
 
+
+
+<script type="text/javascript">
+    $('input[type="radio"]').change(function () {
+        var userPollId = $('#userPollId').val();
+        const url = "/mypolls/update_poll_status/"+userPollId.toString();
+        console.log(url);
+        $.get(url);
+    });
+</script>

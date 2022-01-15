@@ -6,14 +6,44 @@ const models = require("../../models");
 router.get('/', cookieJwtAuthGeneralUser, index)
 router.get('/edit/:id', cookieJwtAuthGeneralUser, edit)
 router.post('/update', cookieJwtAuthGeneralUser, update)
+router.get('/update_poll_status/:id', cookieJwtAuthGeneralUser, update_poll_status)
 
 module.exports = router;
 
 async function index (req, resp) {
 
+
+
     var unansweredPolls = await models.UserPoll.findAll({
         where: {
-            userId: resp.locals.current_user.id
+            userId: resp.locals.current_user.id,
+            status: "Not Started"
+        },
+        include: {
+            model: models.PollRun, // UserSurveys have many Answers
+            include: {
+              model: models.Poll // survey question definition
+            }
+          }
+    });
+
+    var inProgressPolls = await models.UserPoll.findAll({
+        where: {
+            userId: resp.locals.current_user.id,
+            status: "In Progress"
+        },
+        include: {
+            model: models.PollRun, // UserSurveys have many Answers
+            include: {
+              model: models.Poll // survey question definition
+            }
+          }
+    });
+
+    var answeredPolls = await models.UserPoll.findAll({
+        where: {
+            userId: resp.locals.current_user.id,
+            status: "Finished"
         },
         include: {
             model: models.PollRun, // UserSurveys have many Answers
@@ -23,7 +53,7 @@ async function index (req, resp) {
           }
     });
     debugger
-    resp.render("myPolls/index", {unanswered_polls: unansweredPolls});
+    resp.render("myPolls/index", {unansweredPolls: unansweredPolls, inProgressPolls: inProgressPolls, answeredPolls: answeredPolls});
 }
 
 async function edit (req, resp) {
@@ -33,15 +63,18 @@ async function edit (req, resp) {
             userPollId: userPollId
         }
     });
+    debugger
 
-    resp.render("myPolls/edit", {questions: questions});
+    resp.render("myPolls/edit", {questions: questions, userPollId: userPollId});
 }
 
 
 async function update (req, resp) {
     
-    var answers = req.body//Object.keys(answers)
-    
+    var userPollId = req.body.userPollId
+    delete req.body["userPollId"];
+    var answers = req.body
+    debugger
     for (var a of Object.keys(answers)) {
         var questionId = Number(a)
         var question = await models.Question.findOne({
@@ -51,7 +84,18 @@ async function update (req, resp) {
         });
         await question.update({ answer: JSON.parse(answers[a]) })
     }
+
+    var userPoll = await models.UserPoll.findOne({id: userPollId})
+    await userPoll.update({status: "Finished"})
+
     resp.render("home");
+}
+
+async function update_poll_status (req, resp) {
+    var userPoll = await models.UserPoll.findOne({id: req.params.id})
+    debugger
+    await userPoll.update({status: "In Progress"})
+    
 }
 
 
