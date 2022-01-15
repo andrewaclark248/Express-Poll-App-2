@@ -25,10 +25,10 @@ function register_get (req, resp) {
 
 
 async function login_user (req, resp ) {
-  var username = req.body.email
+  var userName = req.body.email
   var password = req.body.password
 
-  var user = await models.User.findOne({ where: { user_name: username } });
+  var user = await models.User.findOne({ where: { userName: userName } });
   if (user){
     if(user.password == password)
     {
