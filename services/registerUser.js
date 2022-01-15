@@ -3,11 +3,11 @@ const models = require("../models");
 const jwt = require("jsonwebtoken");
 const KEY = "mysomethingkey"
 
-class LoginServiceFinal extends Interactor {
+class RegisterUser extends Interactor {
     static async run(context) {
     var token = null;
     try{
-        var user = await models.User.create({ userName: context.email, password: context.password });
+        var user = await models.User.create({ userName: context.email, password: context.password, role: "General" });
         const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
 
     }catch(e){
@@ -22,5 +22,5 @@ class LoginServiceFinal extends Interactor {
     }
 }
 
-module.exports = { LoginServiceFinal }
+module.exports = { RegisterUser }
 
