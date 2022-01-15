@@ -14,11 +14,10 @@ async function index (req, resp) {
 
 async function add (req, resp) {
 
-    var username = req.body.email
+    var userName = req.body.email
     var password = req.body.password
-    var admin_id = resp.locals.current_user.id 
 
-    const adminUser = await models.User.create({ user_name: username, password_hash: password, role: "General", admin_id: admin_id});
+    const adminUser = await models.User.create({ userName: userName, password: password, role: "General", adminId: resp.locals.current_user.id});
   
     resp.redirect("/users");
 

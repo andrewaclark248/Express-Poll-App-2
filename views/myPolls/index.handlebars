@@ -24,8 +24,8 @@
                         {{#each unanswered_polls as |unanswered_poll| }}
                             <tr>
                                 <th scope="row">1</th>
-                                <td> {{ this.name }}</td>
-                                <td> {{ this.run_number }}</td>
+                                <td> {{ this.PollRun.Poll.name }}</td>
+                                <td> 1 </td>
                                 <td>unswered</td>
                                 <td> <a class="nav-link" href="/myPolls/edit/{{this.id}}">View Poll</a></td>
                             </tr>

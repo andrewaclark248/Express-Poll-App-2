@@ -11,20 +11,26 @@ module.exports = router;
 
 async function index (req, resp) {
 
-    var unanswered_polls = await models.UserPoll.findAll({
+    var unansweredPolls = await models.UserPoll.findAll({
         where: {
-            user_id: resp.locals.current_user.id
-        }
+            userId: resp.locals.current_user.id
+        },
+        include: {
+            model: models.PollRun, // UserSurveys have many Answers
+            include: {
+              model: models.Poll // survey question definition
+            }
+          }
     });
-
-    resp.render("myPolls/index", {unanswered_polls: unanswered_polls});
+    debugger
+    resp.render("myPolls/index", {unanswered_polls: unansweredPolls});
 }
 
 async function edit (req, resp) {
-    var poll_id = Number(req.params.id)
+    var userPollId = Number(req.params.id)
     var questions = await models.Question.findAll({
         where: {
-            poll_id: poll_id
+            userPollId: userPollId
         }
     });
 
@@ -37,10 +43,10 @@ async function update (req, resp) {
     var answers = req.body//Object.keys(answers)
     
     for (var a of Object.keys(answers)) {
-        var question_id = Number(a)
+        var questionId = Number(a)
         var question = await models.Question.findOne({
             where: {
-                id: question_id
+                id: questionId
             }
         });
         await question.update({ answer: JSON.parse(answers[a]) })
