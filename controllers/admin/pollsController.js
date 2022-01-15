@@ -45,7 +45,7 @@ async function create_poll (req, resp) {
     //create each UserPoll
     for(var userName of userNames) {
       var user = await models.User.findOne({ where: { userName: userName } });
-      var userPoll = await pollRun.createUserPoll({userId: user.id})
+      var userPoll = await pollRun.createUserPoll({userId: user.id, status: "Not Started"})
       
       for(var question of questions){
         await userPoll.createQuestion({name: question})
@@ -109,8 +109,8 @@ async function resend_poll (req, resp) {
   for(var userPoll of userPolls)
   {
     var user = await userPoll.getUser()
-    debugger
-    var newUserPoll = await newPollRun.createUserPoll({userId: user.id})
+    
+    var newUserPoll = await newPollRun.createUserPoll({userId: user.id, status: "Not started"})
     var questions = await userPoll.getQuestions()
     for(var question of questions)
     {

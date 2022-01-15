@@ -21,9 +21,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#each unanswered_polls as |unanswered_poll| }}
+                        {{#each unansweredPolls as |unansweredPoll| }}
                             <tr>
-                                <th scope="row">1</th>
+                                <th scope="row">{{this.id}}</th>
                                 <td> {{ this.PollRun.Poll.name }}</td>
                                 <td> 1 </td>
                                 <td>unswered</td>
@@ -37,11 +37,66 @@
     </div>
     <div class="col-lg-5 ">
         <div class="card">
-            <div class="card-header"><center><h5>Answered Polls</h5></center></div>
+            <div class="card-header"><center><h5>In Progress</h5></center></div>
             <div class="card-body">
-                
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Poll Name</th>
+                        <th scope="col">Run #</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each inProgressPolls as |inProgressPoll| }}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td> {{ this.PollRun.Poll.name }}</td>
+                                <td> 1 </td>
+                                <td>unswered</td>
+                                <td> <a class="nav-link" href="/myPolls/edit/{{this.id}}">View Poll</a></td>
+                            </tr>
+                        {{/each}} 
+                    </tbody>
+                </table>
                 
             </div>
         </div>
     </div>
+</div>
+
+<div class="row">
+
+    <div class="col-lg-5 offset-lg-1">
+        <div class="card">
+            <div class="card-header"><center><h5>Answered Polls</h5></center></div>
+            <div class="card-body">
+                  <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Poll Name</th>
+                        <th scope="col">Run #</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">View</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each answeredPolls as |answeredPoll| }}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td> {{ this.PollRun.Poll.name }}</td>
+                                <td> 1 </td>
+                                <td>unswered</td>
+                                <td> <a class="nav-link" href="/myPolls/edit/{{this.id}}">View Poll</a></td>
+                            </tr>
+                        {{/each}} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
