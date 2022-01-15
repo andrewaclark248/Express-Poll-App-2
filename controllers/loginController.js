@@ -17,13 +17,16 @@ async function register_post (req, resp) {
   var email = req.body.email
   var password = req.body.password
   var result = await LoginService.run({email, password});
+  if(result.error) {
+    return resp.render('index', { flashSucces: result.error, layout: 'login_page' });
+  }
   
   resp.cookie("token", result.token);
   resp.render("home");
 };
 
 function register_get (req, resp) {
-  resp.render("register")
+  resp.render("register",{ layout: 'login_page' })
 }
 
 

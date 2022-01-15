@@ -4,8 +4,9 @@ const KEY = "mysomethingkey"
 
 //register user
 async function register( username, password ) {
+    var user = null;
     try {
-        var user = await models.User.create({ userName: username, password: password });
+        user = await models.User.create({ userName: username, password: password });
     } catch(e) {
         debugger
     }

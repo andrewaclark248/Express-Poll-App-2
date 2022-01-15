@@ -1,3 +1,11 @@
+  <div class="container pt-3">
+
 <h1>Login page layout</h1>
+{{#if flashSucces}}
+<div class="alert alert-success" role="alert">
+  {{flashSucces}}
+</div>
+{{/if}}
 
     {{{body}}}
+  </div>
