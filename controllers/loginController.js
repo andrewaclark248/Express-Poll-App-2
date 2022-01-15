@@ -4,6 +4,7 @@ const loginService = require('/Users/andrewclark/github/express-poll-app-2/servi
 const jwt = require("jsonwebtoken");
 const KEY = "mysomethingkey"
 const models = require("../models");
+const LoginService = require("/Users/andrewclark/github/express-poll-app-2/services/loginServiceFinal").LoginServiceFinal
 
 
 router.post('/register', register_post)
@@ -12,11 +13,13 @@ router.post('/', login_user)
 
 module.exports = router;
 
-function register_post (req, resp) {
-  var result = loginService.register(req.body.email, req.body.password)
-  const token = jwt.sign(user, KEY, { expiresIn: "1h" });
-  resp.cookie("token", token);
-  resp.redirect("home");
+async function register_post (req, resp) {
+  var email = req.body.email
+  var password = req.body.password
+  var result = await LoginService.run({email, password});
+  
+  resp.cookie("token", result.token);
+  resp.render("home");
 };
 
 function register_get (req, resp) {
