@@ -98,33 +98,25 @@ async function view_user_reponse (req, resp) {
 
 async function resend_poll (req, resp) {
   var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
-  var questions = await models.Question.findAll({where: {poll_id: poll.id}})
-  
-  //var last_poll = await models.Poll.findOne({where: {id:  }})
 
+  //create PollRun
+  var newPollRun = await poll.createPollRun()
 
-  var run_number = 1+poll.run_number
+  //Create UserPolls
+  var allPollRuns = await poll.getPollRuns()
+  var userPolls = await allPollRuns[0].getUserPolls()
 
-  const admin_poll = await models.Poll.create({ 
-    name: poll.name, 
-    user_id: resp.locals.current_user.id, 
-    run_number: run_number,
-    original_poll_id: poll.id
-   });
-
-  for (const question of questions) { 
-    await admin_poll.createQuestion({name: question.name, user_id: admin_poll.user_id});
-  }
-  
-  var userPolls = await poll.getUserPolls({include: [{ model: models.User }]})//models.UserPoll.findAll({where: {poll_id: poll.id}, })
-  
-  for (const poll of userPolls) { 
-    const user_poll = await admin_poll.createUserPoll({ user_id: poll.User.id });
-
-    for (const question of questions) { 
-      await user_poll.createQuestion({name: question.name})
+  for(var userPoll of userPolls)
+  {
+    var user = await userPoll.getUser()
+    debugger
+    var newUserPoll = await newPollRun.createUserPoll({userId: user.id})
+    var questions = await userPoll.getQuestions()
+    for(var question of questions)
+    {
+      await newUserPoll.createQuestion({name: question.name})
     }
-  } 
+  }
 
   resp.render("home");
 }
