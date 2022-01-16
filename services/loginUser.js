@@ -13,7 +13,7 @@ class LoginUser extends Interactor {
             if(user.password == context.password)
             {
                 token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
-                context.isAdmin  = (user.role == "Admin") ? true : false;
+                context.isAdmin  = (user.role == models.User.ADMIN_ROLE) ? true : false;
             }
 
         } else

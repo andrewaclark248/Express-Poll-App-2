@@ -17,7 +17,7 @@ async function index (req, resp) {
     var unansweredPolls = await models.UserPoll.findAll({
         where: {
             userId: resp.locals.current_user.id,
-            status: "Not Started"
+            status: models.UserPoll.NOT_STARTED
         },
         include: {
             model: models.PollRun, // UserSurveys have many Answers
@@ -30,7 +30,7 @@ async function index (req, resp) {
     var inProgressPolls = await models.UserPoll.findAll({
         where: {
             userId: resp.locals.current_user.id,
-            status: "In Progress"
+            status: models.UserPoll.IN_PROGRESS
         },
         include: {
             model: models.PollRun, // UserSurveys have many Answers
@@ -39,11 +39,11 @@ async function index (req, resp) {
             }
           }
     });
-
+    
     var answeredPolls = await models.UserPoll.findAll({
         where: {
             userId: resp.locals.current_user.id,
-            status: "Finished"
+            status: models.UserPoll.FINISHED
         },
         include: {
             model: models.PollRun, // UserSurveys have many Answers
@@ -86,7 +86,7 @@ async function update (req, resp) {
     }
 
     var userPoll = await models.UserPoll.findOne({id: userPollId})
-    await userPoll.update({status: "Finished"})
+    await userPoll.update({status: models.UserPoll.FINISHED})
 
     resp.render("home");
 }
@@ -94,7 +94,7 @@ async function update (req, resp) {
 async function update_poll_status (req, resp) {
     var userPoll = await models.UserPoll.findOne({id: req.params.id})
     debugger
-    await userPoll.update({status: "In Progress"})
+    await userPoll.update({status: models.UserPoll.IN_PROGRESS})
     
 }
 
