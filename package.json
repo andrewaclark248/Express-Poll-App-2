@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "only-test": "mocha --inspect-brk test/registerUser.test.js"
+    "only-test": "mocha --inspect-brk test/loginUser.test.js"
 
   },
   "author": "",
