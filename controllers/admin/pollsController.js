@@ -4,6 +4,7 @@ const { cookieJwtAuthAdmin } = require('../../services/cookieJwtAuthAdmin')
 const models = require("../../models");
 const { Op } = require("sequelize");
 const { sequelize } = require('../../models') // import connection
+const CreatePoll = require("../../services/createPoll").CreatePoll
 
 
 router.get('/', cookieJwtAuthAdmin, new_poll)
@@ -26,33 +27,17 @@ async function new_poll (req, resp) {
 }
 
 async function create_poll (req, resp) {
-
     var pollName = req.body.poll_name
     var userNames = [req.body.users_to_add].flat()
     var questions = [req.body.question].flat()
-    debugger
+    var currentUserId = resp.locals.current_user.id
 
-
-    //create transaction
-    //create poll record
-    var adminPoll = await models.Poll.create({ 
-      name: pollName, 
-      userId: resp.locals.current_user.id});
-
-    //create poll run
-    var pollRun = await adminPoll.createPollRun({ userId: adminPoll.userId });
-
-    //create each UserPoll
-    for(var userName of userNames) {
-      var user = await models.User.findOne({ where: { userName: userName } });
-      var userPoll = await pollRun.createUserPoll({userId: user.id, status: models.UserPoll.NOT_STARTED})
-      
-      for(var question of questions){
-        await userPoll.createQuestion({name: question})
-      }
+    var result = await CreatePoll.run({pollName, userNames, questions, currentUserId});
+    if(result.error){
+      return resp.render("home", { flashError: result.error});
+    } else{
+      return resp.render("home", { flashSucces: "You successfully created a poll."});
     }
-
-    resp.render("home");
 }
 
 

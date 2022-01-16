@@ -35,6 +35,16 @@
   </nav>
 
   <div class="container pt-3">
+    {{#if flashSucces}}
+      <div class="alert alert-success" role="alert">
+        {{flashSucces}}
+      </div>
+    {{/if}}
+    {{#if flashError}}
+      <div class="alert alert-danger" role="alert">
+        {{flashError}}
+      </div>
+    {{/if}}
     {{{body}}}
   </div>
 
