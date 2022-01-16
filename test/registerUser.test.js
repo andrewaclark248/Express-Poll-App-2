@@ -7,19 +7,7 @@ const RegisterUser = require("../services/registerUser").RegisterUser
 const jwt = require("jsonwebtoken");
 const KEY = "mysomethingkey"
 
-var UserMock = dbMock.define('user', {
-    firstName: 'Jane',
-    lastName: 'Doe',
-    email: 'test@example.com'
-});
 
-describe('Math', function() {
-    describe('#abs()', function() {
-        it('should return positive value of given negative number', function() {
-            expect(Math.abs(-5)).to.be.equal(5);
-        });
-    });
-});
 describe('success', function() {
     it('successfully returns a token', async function() {
         var email = "mytestemail@gmail.com"
@@ -66,14 +54,3 @@ describe('fails', function() {
     });
                                          
 });
-
-
-
-/***
- * 
- *         var myuser = await UserMock.findOne({
-                                where: {
-                                    firstName: 'Jane'
-                                        }
-                                    });
- */
