@@ -15,7 +15,7 @@ class RegisterUser extends Interactor {
     }
 
     return {error: context.error, token: token}
-  }
+    }
  
     async rollback() {
         // rollback in case of an error thrown in run()
