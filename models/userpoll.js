@@ -27,7 +27,16 @@ module.exports = (sequelize, DataTypes) => {
     UserPoll.hasMany(models.Question)
     UserPoll.belongsTo(models.User)
   };
-
+  const NOT_STARTED = "Not Started";
+  const IN_PROGRESS = "In Progress";
+  const FINISHED = "Finished"
+  UserPoll.NOT_STARTED = NOT_STARTED
+  UserPoll.IN_PROGRESS = IN_PROGRESS
+  UserPoll.FINISHED = FINISHED
   
   return UserPoll;
 };
+
+
+
+

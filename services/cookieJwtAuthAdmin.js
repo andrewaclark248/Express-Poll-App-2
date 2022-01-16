@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-//const { Model } = require("sequelize/dist");
 const KEY = "mysomethingkey"
+const models = require("../models");
 
 
 exports.cookieJwtAuthAdmin = (req, res, next) => {
@@ -9,7 +9,7 @@ exports.cookieJwtAuthAdmin = (req, res, next) => {
     const user = jwt.verify(token, KEY);
     res.locals.current_user = user
     //debugger
-    if (user.role != "Admin")
+    if (user.role != models.User.ADMIN_ROLE)
     {
       res.clearCookie("token");
       return res.redirect("/");    }

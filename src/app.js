@@ -2,6 +2,9 @@ const express = require('express')
 const path = require('path')
 var Handlebars = require('handlebars')
 var {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
+const flash = require('connect-flash');
+
+
 
 const homeRoutes = require('../routes/homeRoutes')
 var exphbs = require('express-handlebars');
@@ -27,6 +30,9 @@ const hbs2 = exphbs.create({
     }
   }
 });
+
+app.use(flash());
+
 
 
 //add cookie to http request
@@ -81,7 +87,6 @@ app.use('/polls', pollsRoutes)
 app.use('/mypolls', myPollsRoutes)
 
  
-
 
 //listen on port 3000
 app.listen(3000, () => {console.log("server is up on port 3000")})

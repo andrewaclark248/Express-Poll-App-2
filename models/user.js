@@ -32,6 +32,12 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(models.Poll)
     User.hasMany(models.UserPoll)
   };
+  
+  const ADMIN_ROLE = "Admin"
+  const GENERAL_ROLE = "General"
+  User.ADMIN_ROLE = ADMIN_ROLE
+  User.GENERAL_ROLE = GENERAL_ROLE
+
 
   return User;
 };
