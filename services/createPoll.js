@@ -13,11 +13,10 @@ class CreatePoll extends Interactor {
         if (context.questions[0].length == 0 || context.questions.length == 0){
             context.error = "You must provide a question."
         }        
-        if (context.error)
-        {
+        if (context.error){
             return {error: context.error}
         }
-        debugger
+        
         //create poll record
         var adminPoll = await models.Poll.create({ name: context.pollName, 
                                                     userId: context.currentUserId});
@@ -33,8 +32,6 @@ class CreatePoll extends Interactor {
             for(var question of context.questions){
             await userPoll.createQuestion({name: question})
             }
-        
-        
         }
         return {error: context.error}
 

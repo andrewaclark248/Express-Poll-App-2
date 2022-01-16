@@ -5,6 +5,7 @@ const models = require("../../models");
 const { Op } = require("sequelize");
 const { sequelize } = require('../../models') // import connection
 const CreatePoll = require("../../services/createPoll").CreatePoll
+const ResendPoll = require("../../services/resendPoll").ResendPoll
 
 
 router.get('/', cookieJwtAuthAdmin, new_poll)
@@ -82,25 +83,13 @@ async function view_user_reponse (req, resp) {
 
 
 async function resend_poll (req, resp) {
-  var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
+  var pollId = Number(req.params.id)
 
-  //create PollRun
-  var newPollRun = await poll.createPollRun()
-
-  //Create UserPolls
-  var allPollRuns = await poll.getPollRuns()
-  var userPolls = await allPollRuns[0].getUserPolls()
-
-  for(var userPoll of userPolls)
-  {
-    var user = await userPoll.getUser()
-    
-    var newUserPoll = await newPollRun.createUserPoll({userId: user.id, status: models.UserPoll.NOT_STARTED})
-    var questions = await userPoll.getQuestions()
-    for(var question of questions)
-    {
-      await newUserPoll.createQuestion({name: question.name})
-    }
+  var result = await ResendPoll.run({pollId});
+  if(result.error){
+    return resp.render("home", { flashError: result.error});
+  } else{
+    return resp.render("home", { flashSucces: "You successfully resent a poll."});
   }
 
   resp.render("home");
