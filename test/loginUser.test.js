@@ -57,13 +57,3 @@ describe('fails', function() {
                                          
 });
 
-
-
-/***
- * 
- *         var myuser = await UserMock.findOne({
-                                where: {
-                                    firstName: 'Jane'
-                                        }
-                                    });
- */

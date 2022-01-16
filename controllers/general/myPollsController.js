@@ -12,17 +12,15 @@ module.exports = router;
 
 async function index (req, resp) {
 
-
-
     var unansweredPolls = await models.UserPoll.findAll({
         where: {
             userId: resp.locals.current_user.id,
             status: models.UserPoll.NOT_STARTED
         },
         include: {
-            model: models.PollRun, // UserSurveys have many Answers
+            model: models.PollRun, 
             include: {
-              model: models.Poll // survey question definition
+              model: models.Poll
             }
           }
     });
@@ -33,9 +31,9 @@ async function index (req, resp) {
             status: models.UserPoll.IN_PROGRESS
         },
         include: {
-            model: models.PollRun, // UserSurveys have many Answers
+            model: models.PollRun, 
             include: {
-              model: models.Poll // survey question definition
+              model: models.Poll 
             }
           }
     });
@@ -46,9 +44,9 @@ async function index (req, resp) {
             status: models.UserPoll.FINISHED
         },
         include: {
-            model: models.PollRun, // UserSurveys have many Answers
+            model: models.PollRun,
             include: {
-              model: models.Poll // survey question definition
+              model: models.Poll 
             }
           }
     });
