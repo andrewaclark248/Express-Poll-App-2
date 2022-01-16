@@ -4,6 +4,8 @@ const { cookieJwtAuthAdmin } = require('../../services/cookieJwtAuthAdmin')
 const models = require("../../models");
 const { Op } = require("sequelize");
 const { sequelize } = require('../../models') // import connection
+const CreatePoll = require("../../services/createPoll").CreatePoll
+const ResendPoll = require("../../services/resendPoll").ResendPoll
 
 
 router.get('/', cookieJwtAuthAdmin, new_poll)
@@ -26,33 +28,17 @@ async function new_poll (req, resp) {
 }
 
 async function create_poll (req, resp) {
-
     var pollName = req.body.poll_name
     var userNames = [req.body.users_to_add].flat()
     var questions = [req.body.question].flat()
-    debugger
+    var currentUserId = resp.locals.current_user.id
 
-
-    //create transaction
-    //create poll record
-    var adminPoll = await models.Poll.create({ 
-      name: pollName, 
-      userId: resp.locals.current_user.id});
-
-    //create poll run
-    var pollRun = await adminPoll.createPollRun({ userId: adminPoll.userId });
-
-    //create each UserPoll
-    for(var userName of userNames) {
-      var user = await models.User.findOne({ where: { userName: userName } });
-      var userPoll = await pollRun.createUserPoll({userId: user.id, status: models.UserPoll.NOT_STARTED})
-      
-      for(var question of questions){
-        await userPoll.createQuestion({name: question})
-      }
+    var result = await CreatePoll.run({pollName, userNames, questions, currentUserId});
+    if(result.error){
+      return resp.render("home", { flashError: result.error});
+    } else{
+      return resp.render("home", { flashSucces: "You successfully created a poll."});
     }
-
-    resp.render("home");
 }
 
 
@@ -97,25 +83,13 @@ async function view_user_reponse (req, resp) {
 
 
 async function resend_poll (req, resp) {
-  var poll = await models.Poll.findOne({where: {id:  Number(req.params.id)}})
+  var pollId = Number(req.params.id)
 
-  //create PollRun
-  var newPollRun = await poll.createPollRun()
-
-  //Create UserPolls
-  var allPollRuns = await poll.getPollRuns()
-  var userPolls = await allPollRuns[0].getUserPolls()
-
-  for(var userPoll of userPolls)
-  {
-    var user = await userPoll.getUser()
-    
-    var newUserPoll = await newPollRun.createUserPoll({userId: user.id, status: models.UserPoll.NOT_STARTED})
-    var questions = await userPoll.getQuestions()
-    for(var question of questions)
-    {
-      await newUserPoll.createQuestion({name: question.name})
-    }
+  var result = await ResendPoll.run({pollId});
+  if(result.error){
+    return resp.render("home", { flashError: result.error});
+  } else{
+    return resp.render("home", { flashSucces: "You successfully resent a poll."});
   }
 
   resp.render("home");
