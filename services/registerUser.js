@@ -5,10 +5,23 @@ const KEY = "mysomethingkey"
 
 class RegisterUser extends Interactor {
     static async run(context) {
+
+    if (context.email.length == 0){
+        context.error = "Please provide a valid email"
+    }
+    if (context.password.length==0) {
+        context.error = "Please provide a password"
+    }
+    
+    if (context.error != null){
+        return {error: context.error}
+    }
+    debugger
     var token = null;
     try{
         var user = await models.User.create({ userName: context.email, password: context.password, role: models.User.GENERAL_ROLE });
-        const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
+        //debugger
+        token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
 
     }catch(e){
         context.error = e.message
