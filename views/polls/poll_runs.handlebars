@@ -8,7 +8,7 @@
 </div>
 <br>
 <div class="row">
-    <div class="col-lg-8 offset-lg-2">
+    <div class="col-lg-5 offset-lg-1">
         <div class="card">
             <div class="card-header"><center><h5>Poll Runs</h5></center></div>
             <div class="card-body">
@@ -33,6 +33,17 @@
                         {{/each}} 
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 ">
+        <div class="card">
+            <div class="card-header"><center><h5>Poll Runs</h5></center></div>
+            <div class="card-body">
+                <center><h4>Stats</h4></center>
+                <hr> 
+                <p>Yes: {{percent_yes}}%</p>    
+                <p>No: {{perecent_no}}%</p>           
             </div>
         </div>
     </div>

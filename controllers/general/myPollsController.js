@@ -50,7 +50,7 @@ async function index (req, resp) {
             }
           }
     });
-    debugger
+    
     resp.render("myPolls/index", {unansweredPolls: unansweredPolls, inProgressPolls: inProgressPolls, answeredPolls: answeredPolls});
 }
 
@@ -61,18 +61,21 @@ async function edit (req, resp) {
             userPollId: userPollId
         }
     });
-    debugger
+    
+    var userPoll = await questions[0].getUserPoll()
 
-    resp.render("myPolls/edit", {questions: questions, userPollId: userPollId});
+    var disableInput = (userPoll.status == models.UserPoll.FINISHED) ? true : false
+    debugger
+    resp.render("myPolls/edit", {questions: questions, userPollId: userPollId, disableInput: disableInput});
 }
 
 
 async function update (req, resp) {
     
-    var userPollId = req.body.userPollId
+    var userPollId = Number(req.body.userPollId)
     delete req.body["userPollId"];
     var answers = req.body
-    debugger
+    
     for (var a of Object.keys(answers)) {
         var questionId = Number(a)
         var question = await models.Question.findOne({
@@ -83,15 +86,16 @@ async function update (req, resp) {
         await question.update({ answer: JSON.parse(answers[a]) })
     }
 
-    var userPoll = await models.UserPoll.findOne({id: userPollId})
+    var userPoll = await models.UserPoll.findOne({where: {id: userPollId}})
     await userPoll.update({status: models.UserPoll.FINISHED})
 
     resp.render("home");
 }
 
+//ajax function
 async function update_poll_status (req, resp) {
-    var userPoll = await models.UserPoll.findOne({id: req.params.id})
-    debugger
+    var userPoll = await models.UserPoll.findOne({where: {id: Number(req.params.id)}})
+    //debugger
     await userPoll.update({status: models.UserPoll.IN_PROGRESS})
     
 }

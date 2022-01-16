@@ -61,7 +61,26 @@ async function show (req, resp) {
     }
   });
 
-  resp.render("polls/poll_runs", {poll_runs: pollRuns, poll_id: pollId });
+  var yes_count = 0
+  var no_count = 0
+  
+  for(var pollRun of pollRuns) {
+    var userPolls = await pollRun.getUserPolls()
+    for(var userPoll of userPolls)
+    {
+      var questions = await userPoll.getQuestions()
+      for(var question of questions)
+      {
+        question.answer ? yes_count++ : no_count++
+      }
+    }
+  }
+
+  var total = yes_count + no_count
+  var percent_yes = (Math.floor((yes_count / total) * 100))
+  var perecent_no = 100 - percent_yes
+
+  resp.render("polls/poll_runs", {poll_runs: pollRuns, poll_id: pollId, percent_yes: percent_yes, perecent_no: perecent_no });
 }
 
 async function poll_run (req, resp) {
