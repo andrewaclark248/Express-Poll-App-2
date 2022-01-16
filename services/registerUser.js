@@ -8,7 +8,8 @@ class RegisterUser extends Interactor {
     var token = null;
     try{
         var user = await models.User.create({ userName: context.email, password: context.password, role: models.User.GENERAL_ROLE });
-        const token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
+        //debugger
+        token = jwt.sign(user.toJSON(), KEY, { expiresIn: "1h" });
 
     }catch(e){
         context.error = e.message
