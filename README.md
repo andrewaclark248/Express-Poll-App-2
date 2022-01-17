@@ -23,7 +23,7 @@ Tools
 Tried But Did Not Have Time To
 - make use of services
 - had a hard time use the NestJS framework
-- Would add mysql to a couple places
+- Would add param validation and model validation to a couple places
 - make use of transactions when creating polls and poll runs
 - would have made more test for the various services
 
