@@ -6,7 +6,7 @@ Run seed file: ":npx sequelize-cli db:seed:all"
 
 May need to install sequelize-cli: "npm install --save-dev sequelize-cli"
 
-Start the app "node app.js"
+Start the app "node src/app.js"
 
 Run test with "mocha"
 
